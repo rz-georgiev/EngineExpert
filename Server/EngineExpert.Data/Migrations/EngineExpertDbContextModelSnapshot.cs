@@ -28,13 +28,13 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("CretedByUserId")
+                    b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdateAt")
+                    b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdatedByUserId")
+                    b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -51,13 +51,13 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("CretedByUserId")
+                    b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdateAt")
+                    b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdatedByUserId")
+                    b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -74,13 +74,13 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("CretedByUserId")
+                    b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdateAt")
+                    b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdatedByUserId")
+                    b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -97,13 +97,13 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("CretedByUserId")
+                    b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdateAt")
+                    b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdatedByUserId")
+                    b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -120,14 +120,26 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("CretedByUserId")
+                    b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdateAt")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("LastUpdatedByUserId")
+                    b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

@@ -1,5 +1,7 @@
 
 using EngineExpert.Data;
+using EngineExpert.Services.Interfaces;
+using EngineExpert.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +25,7 @@ namespace EngineExpert
                 .AddJwtBearer(options =>
                 {
                     options.Authority = "https://your-auth-server.com/";
-                    options.Audience = "your-api";
+                    options.Audience = "EngineExpert";
                     //options.SigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key"));
                 });
 
@@ -31,6 +33,8 @@ namespace EngineExpert
             // Add Pomelo Entity Framework Core to the services
             builder.Services.AddDbContext<EngineExpertDbContext>(options =>
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+            builder.Services.AddTransient<IUserService, UserService>();
 
             var app = builder.Build();
 
@@ -41,6 +45,7 @@ namespace EngineExpert
                 app.UseSwaggerUI();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();

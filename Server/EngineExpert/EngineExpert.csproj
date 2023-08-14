@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EngineExpert.Core\EngineExpert.Core.csproj" />
     <ProjectReference Include="..\EngineExpert.Data\EngineExpert.Data.csproj" />
+    <ProjectReference Include="..\EngineExpert.Services\EngineExpert.Services.csproj" />
   </ItemGroup>
 
 </Project>

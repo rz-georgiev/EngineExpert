@@ -50,3 +50,8 @@ D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\Microsoft.Entit
 D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
 D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\Mono.TextTemplating.dll
 D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\System.CodeDom.dll
+D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Core.dll
+D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Services.dll
+D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Core.pdb
+D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Services.pdb
