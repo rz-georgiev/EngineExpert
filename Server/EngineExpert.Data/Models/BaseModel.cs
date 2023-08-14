@@ -6,10 +6,10 @@
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime LastUpdateAt { get; set; }
+        public DateTime? LastUpdatedAt { get; set; }
 
-        public DateTime CretedByUserId { get; set; }
+        public DateTime? CreatedByUserId { get; set; }
 
-        public DateTime LastUpdatedByUserId { get; set; }
+        public DateTime? LastUpdatedByUserId { get; set; }
     }
 }

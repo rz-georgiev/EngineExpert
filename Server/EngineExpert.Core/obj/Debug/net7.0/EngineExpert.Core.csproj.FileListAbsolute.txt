@@ -1,0 +1,11 @@
+D:\Development\EngineExpert\Server\EngineExpert.Core\bin\Debug\net7.0\EngineExpert.Core.deps.json
+D:\Development\EngineExpert\Server\EngineExpert.Core\bin\Debug\net7.0\EngineExpert.Core.dll
+D:\Development\EngineExpert\Server\EngineExpert.Core\bin\Debug\net7.0\EngineExpert.Core.pdb
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\EngineExpert.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\EngineExpert.Core.AssemblyInfoInputs.cache
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\EngineExpert.Core.AssemblyInfo.cs
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\EngineExpert.Core.csproj.CoreCompileInputs.cache
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\EngineExpert.Core.dll
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\refint\EngineExpert.Core.dll
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\EngineExpert.Core.pdb
+D:\Development\EngineExpert\Server\EngineExpert.Core\obj\Debug\net7.0\ref\EngineExpert.Core.dll
