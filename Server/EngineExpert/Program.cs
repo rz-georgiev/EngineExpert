@@ -1,4 +1,8 @@
 
+using EngineExpert.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+
 namespace EngineExpert
 {
     public class Program
@@ -14,6 +18,20 @@ namespace EngineExpert
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Add JWT authentication to the services
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://your-auth-server.com/";
+                    options.Audience = "your-api";
+                    //options.SigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key"));
+                });
+
+            var connectionString = "Server=MYSQL5048.site4now.net;Database=db_a558e2_engexp;Uid=a558e2_engexp;Pwd=engexp1234";
+            // Add Pomelo Entity Framework Core to the services
+            builder.Services.AddDbContext<EngineExpertDbContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -24,12 +42,8 @@ namespace EngineExpert
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }

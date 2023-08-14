@@ -1,0 +1,14 @@
+D:\Development\EngineExpert\Server\EngineExpert.Data\bin\Debug\net7.0\EngineExpert.Data.deps.json
+D:\Development\EngineExpert\Server\EngineExpert.Data\bin\Debug\net7.0\EngineExpert.Data.dll
+D:\Development\EngineExpert\Server\EngineExpert.Data\bin\Debug\net7.0\EngineExpert.Data.pdb
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.csproj.AssemblyReference.cache
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.AssemblyInfoInputs.cache
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.AssemblyInfo.cs
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.csproj.CoreCompileInputs.cache
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.dll
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\refint\EngineExpert.Data.dll
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.pdb
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\ref\EngineExpert.Data.dll
+D:\Development\EngineExpert\Server\EngineExpert.Data\bin\Debug\net7.0\EngineExpert.Data.runtimeconfig.json
+D:\Development\EngineExpert\Server\EngineExpert.Data\obj\Debug\net7.0\EngineExpert.Data.genruntimeconfig.cache
