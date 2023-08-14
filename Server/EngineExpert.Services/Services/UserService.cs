@@ -3,6 +3,7 @@ using EngineExpert.Data;
 using EngineExpert.Data.Models;
 using EngineExpert.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,10 +15,13 @@ namespace EngineExpert.Services.Services
     public class UserService : IUserService
     {
         private readonly EngineExpertDbContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public UserService(EngineExpertDbContext dbContext)
+        public UserService(EngineExpertDbContext dbContext,
+            IConfiguration configuration)
         {
             _dbContext = dbContext;
+            _configuration = configuration;
         }
 
         public async Task<BaseResponseModel> LoginAsync(LoginModelRequest request)
@@ -25,17 +29,12 @@ namespace EngineExpert.Services.Services
             var username = request.Username;
             var password = request.Password;
 
-            var areCredentialsOk = await _dbContext.Users.AnyAsync(x =>
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x =>
                     (x.Username == username || x.Email == username)
                     && x.Password == GetHashString(password));
-            if (areCredentialsOk)
+            if (user != null)
             {
-                var mySecret = "TYqUztzV$amNYvUj6C$VRYaF+FL3FU8W";
-                var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
-
-                var myIssuer = "http://mysite.com";
-                var myAudience = "http://myaudience.com";
-
+                var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]));
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -44,10 +43,13 @@ namespace EngineExpert.Services.Services
                         new Claim(ClaimTypes.NameIdentifier, username),
                     }),
                     Expires = DateTime.UtcNow.AddDays(7),
-                    Issuer = myIssuer,
-                    Audience = myAudience,
-                    SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+                    Issuer = _configuration["Jwt:Issuer"],
+                    Audience = _configuration["Jwt:Audience"],
+                    SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
                 };
+
+                foreach (var role in user.Roles)
+                    tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role.Name));
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return new BaseResponseModel

@@ -3,6 +3,7 @@ using System;
 using EngineExpert.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EngineExpert.Data.Migrations
 {
     [DbContext(typeof(EngineExpertDbContext))]
-    partial class EngineExpertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230814205330_AddingUserRoles2")]
+    partial class AddingUserRoles2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,16 +120,23 @@ namespace EngineExpert.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("CreatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedByUserId")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -172,6 +182,18 @@ namespace EngineExpert.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("CreatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedByUserId")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -187,16 +209,9 @@ namespace EngineExpert.Data.Migrations
                     b.ToTable("UsersRoles");
                 });
 
-            modelBuilder.Entity("EngineExpert.Data.Models.Role", b =>
-                {
-                    b.HasOne("EngineExpert.Data.Models.User", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("EngineExpert.Data.Models.UserRole", b =>
                 {
-                    b.HasOne("EngineExpert.Data.Models.Role", "Role")
+                    b.HasOne("EngineExpert.Data.Models.User", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -211,11 +226,6 @@ namespace EngineExpert.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EngineExpert.Data.Models.User", b =>
-                {
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }
