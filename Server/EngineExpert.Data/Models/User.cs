@@ -1,4 +1,6 @@
-﻿namespace EngineExpert.Data.Models
+﻿using EngineExpert.Data.Migrations;
+
+namespace EngineExpert.Data.Models
 {
     public class User : BaseModel
     {
@@ -8,6 +10,10 @@
 
         public string Email { get; set; }
 
-        public virtual IEnumerable<Role> Roles { get; set; }
+        public string? ResetPasswordToken { get; set; }
+
+        public bool IsActive { get; set; } = false;
+
+        public IEnumerable<UserRole> UserRoles { get; set; }
     }
 }

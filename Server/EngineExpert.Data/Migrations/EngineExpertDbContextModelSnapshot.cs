@@ -25,6 +25,65 @@ namespace EngineExpert.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("CarTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("CreatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("EngineTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EuroStandard")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HorsePowers")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ShiftTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarTypeId");
+
+                    b.HasIndex("EngineTypeId");
+
+                    b.HasIndex("ShiftTypeId");
+
+                    b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("EngineExpert.Data.Models.CarType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -37,9 +96,13 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Cars");
+                    b.ToTable("CarType");
                 });
 
             modelBuilder.Entity("EngineExpert.Data.Models.Client", b =>
@@ -54,11 +117,25 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -71,6 +148,12 @@ namespace EngineExpert.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -85,10 +168,14 @@ namespace EngineExpert.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("ClientId");
+
                     b.ToTable("ClientsCars");
                 });
 
-            modelBuilder.Entity("EngineExpert.Data.Models.Repair", b =>
+            modelBuilder.Entity("EngineExpert.Data.Models.EngineType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,9 +193,83 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
+                    b.ToTable("EngineType");
+                });
+
+            modelBuilder.Entity("EngineExpert.Data.Models.Repair", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientCarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("CreatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("LastKilometers")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("RepairTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientCarId");
+
+                    b.HasIndex("RepairTypeId");
+
                     b.ToTable("Repairs");
+                });
+
+            modelBuilder.Entity("EngineExpert.Data.Models.RepairType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("CreatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RepairType");
                 });
 
             modelBuilder.Entity("EngineExpert.Data.Models.Role", b =>
@@ -121,14 +282,36 @@ namespace EngineExpert.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("UserId")
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("EngineExpert.Data.Models.ShiftType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("CreatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedByUserId")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Roles");
+                    b.ToTable("ShiftType");
                 });
 
             modelBuilder.Entity("EngineExpert.Data.Models.User", b =>
@@ -147,6 +330,9 @@ namespace EngineExpert.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -155,6 +341,9 @@ namespace EngineExpert.Data.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ResetPasswordToken")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Username")
@@ -187,11 +376,69 @@ namespace EngineExpert.Data.Migrations
                     b.ToTable("UsersRoles");
                 });
 
-            modelBuilder.Entity("EngineExpert.Data.Models.Role", b =>
+            modelBuilder.Entity("EngineExpert.Data.Models.Car", b =>
                 {
-                    b.HasOne("EngineExpert.Data.Models.User", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId");
+                    b.HasOne("EngineExpert.Data.Models.CarType", "CarType")
+                        .WithMany()
+                        .HasForeignKey("CarTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EngineExpert.Data.Models.EngineType", "EngineType")
+                        .WithMany()
+                        .HasForeignKey("EngineTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EngineExpert.Data.Models.ShiftType", "ShiftType")
+                        .WithMany()
+                        .HasForeignKey("ShiftTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CarType");
+
+                    b.Navigation("EngineType");
+
+                    b.Navigation("ShiftType");
+                });
+
+            modelBuilder.Entity("EngineExpert.Data.Models.ClientCar", b =>
+                {
+                    b.HasOne("EngineExpert.Data.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EngineExpert.Data.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("EngineExpert.Data.Models.Repair", b =>
+                {
+                    b.HasOne("EngineExpert.Data.Models.ClientCar", "ClientCar")
+                        .WithMany("Repairs")
+                        .HasForeignKey("ClientCarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EngineExpert.Data.Models.RepairType", "RepairType")
+                        .WithMany()
+                        .HasForeignKey("RepairTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClientCar");
+
+                    b.Navigation("RepairType");
                 });
 
             modelBuilder.Entity("EngineExpert.Data.Models.UserRole", b =>
@@ -203,7 +450,7 @@ namespace EngineExpert.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("EngineExpert.Data.Models.User", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -213,9 +460,14 @@ namespace EngineExpert.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EngineExpert.Data.Models.ClientCar", b =>
+                {
+                    b.Navigation("Repairs");
+                });
+
             modelBuilder.Entity("EngineExpert.Data.Models.User", b =>
                 {
-                    b.Navigation("Roles");
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

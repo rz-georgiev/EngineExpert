@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EngineExpert.Data.Models
+﻿namespace EngineExpert.Data.Models
 {
     public class Repair : BaseModel
     {
+        public int ClientCarId { get; set; }
+
+        public int RepairTypeId { get; set; }
+
+        public string Notes { get; set; }
+
+        public int LastKilometers { get; set; }
+
+        public decimal Price { get; set; }
+
+        public RepairType RepairType { get; set; }
+
+        public ClientCar ClientCar { get; set; }
     }
 }

@@ -16,12 +16,15 @@ namespace EngineExpert.Services.Services
     {
         private readonly EngineExpertDbContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
         public UserService(EngineExpertDbContext dbContext,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IEmailService emailService)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<BaseResponseModel> LoginAsync(LoginModelRequest request)
@@ -29,9 +32,14 @@ namespace EngineExpert.Services.Services
             var username = request.Username;
             var password = request.Password;
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x =>
-                    (x.Username == username || x.Email == username)
-                    && x.Password == GetHashString(password));
+            var user = await _dbContext.Users.Where(x =>
+                     (x.Username == username || x.Email == username)
+                     && x.Password == GetHashString(password)
+                     && x.IsActive)
+                    .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
+                    .FirstOrDefaultAsync();
+
             if (user != null)
             {
                 var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]));
@@ -48,8 +56,8 @@ namespace EngineExpert.Services.Services
                     SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
                 };
 
-                foreach (var role in user.Roles)
-                    tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role.Name));
+                foreach (var userRole in user.UserRoles)
+                    tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, userRole.Role.Name));
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return new BaseResponseModel
@@ -97,7 +105,7 @@ namespace EngineExpert.Services.Services
                 };
             }
 
-            if (request.Password.Length < 8 || !request.Username.Any(char.IsLetter))
+            if (request.Password.Length < 8 || !request.Password.Any(char.IsLetter))
             {
                 return new BaseResponseModel
                 {
@@ -106,19 +114,160 @@ namespace EngineExpert.Services.Services
                 };
             }
 
+
+            var bytes = new byte[16];
+            using (var rng = new RNGCryptoServiceProvider())
+                rng.GetBytes(bytes);
+            var randomHash = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+
             await _dbContext.AddAsync(new User
             {
                 Username = request.Username,
                 Password = GetHashString(request.Password),
                 Email = request.Email,
                 CreatedAt = DateTime.Now,
+                ResetPasswordToken = randomHash,
+                IsActive = false,
             });
+
+            await _dbContext.SaveChangesAsync();
+
+            var message = $"Please click here to confirm your account -> http://www.engineexpert.com/ConfirmAccount/{randomHash}";
+            await _emailService.SendEmailAsync(request.Email, message);
 
             return new BaseResponseModel
             {
                 IsOk = true,
-                Message = "Successfully registered user!"
+                Message = message,
             };
+        }
+
+        public async Task<BaseResponseModel> ConfirmAccountAsync(ConfirmAccountModelRequest request)
+        {
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.ResetPasswordToken == request.ConfirmHash);
+                if (user == null)
+                {
+                    return new BaseResponseModel
+                    {
+                        IsOk = false,
+                        Message = $"The provided token is invalid"
+                    };
+                }
+
+                user.IsActive = true;
+                user.ResetPasswordToken = null;
+                await _dbContext.SaveChangesAsync();
+
+
+                return new BaseResponseModel
+                {
+                    IsOk = true,
+                    Message = "Account is activated successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel
+                {
+                    IsOk = false,
+                    Message = $"An error occurred while activating your account"
+                };
+            }
+        }
+
+        public async Task<BaseResponseModel> ForgottenPasswordAsync(ForgottenEmailModelRequest request)
+        {
+            try
+            {
+                var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Email == request.RecipientEmail);
+                if (user == null)
+                {
+                    return new BaseResponseModel
+                    {
+                        IsOk = true,
+                        Message = $"If such a user exists, a password reset email will be send"
+                    };
+                }
+                
+                var bytes = new byte[16];
+                using (var rng = new RNGCryptoServiceProvider())
+                    rng.GetBytes(bytes);
+                var randomHash = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+
+                user.ResetPasswordToken = randomHash;
+                await _dbContext.SaveChangesAsync();
+
+                var message = $"Please click here to reset your password -> http://www.engineexpert.com/ResetPassword/{randomHash}";
+                var isSent = await _emailService.SendEmailAsync(request.RecipientEmail, message);
+                if (!isSent.IsOk)
+                {
+                    return new BaseResponseModel
+                    {
+                        IsOk = false,
+                        Message = $"An error occurred while sending a reset password link"
+                    };
+                }
+
+                return new BaseResponseModel
+                {
+                    IsOk = true,
+                    Message = message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel
+                {
+                    IsOk = false,
+                    Message = $"An error occurred while sending a reset password link"
+                };
+            }     
+        }
+
+        public async Task<BaseResponseModel> ResetPasswordAsync(ResetPasswordModelRequest request)
+        {
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.ResetPasswordToken == request.ResetPasswordToken);
+                if (user == null)
+                {
+                    return new BaseResponseModel
+                    {
+                        IsOk = false,
+                        Message = $"The provided token is invalid"
+                    };
+                }
+
+                if (request.Password.Length < 8 || !request.Password.Any(char.IsLetter))
+                {
+                    return new BaseResponseModel
+                    {
+                        IsOk = false,
+                        Message = "Password should be at least 8 characters long and should contain letters"
+                    };
+                }
+
+                user.Password = GetHashString(request.Password);
+                user.ResetPasswordToken = null;
+                await _dbContext.SaveChangesAsync();
+
+
+                return new BaseResponseModel
+                {
+                    IsOk = true,
+                    Message = "Password is changed successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel
+                {
+                    IsOk = false,
+                    Message = $"An error occurred while changing the password"
+                };
+            }
         }
 
         private byte[] GetHash(string inputString)
@@ -133,7 +282,7 @@ namespace EngineExpert.Services.Services
             foreach (byte b in GetHash(inputString))
                 sb.Append(b.ToString("X2"));
 
-            return sb.ToString();
+            return sb.ToString().ToLowerInvariant();
         }
 
         private bool IsValidEmail(string email)
@@ -155,9 +304,5 @@ namespace EngineExpert.Services.Services
             }
         }
 
-        //public async Task<bool> ForgotPasswordAsync(string email)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
