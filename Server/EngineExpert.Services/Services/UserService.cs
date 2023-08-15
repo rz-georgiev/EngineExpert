@@ -177,7 +177,6 @@ namespace EngineExpert.Services.Services
             }
         }
 
-
         public async Task<BaseResponseModel> ForgottenPasswordAsync(ForgottenEmailModelRequest request)
         {
             try

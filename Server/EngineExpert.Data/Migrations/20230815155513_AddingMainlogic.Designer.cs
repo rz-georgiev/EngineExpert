@@ -3,6 +3,7 @@ using System;
 using EngineExpert.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EngineExpert.Data.Migrations
 {
     [DbContext(typeof(EngineExpertDbContext))]
-    partial class EngineExpertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230815155513_AddingMainlogic")]
+    partial class AddingMainlogic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,6 +163,9 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("Kilometers")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -217,6 +223,10 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime?>("CreatedByUserId")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("LastKilometers")
                         .HasColumnType("int");
 
@@ -226,50 +236,14 @@ namespace EngineExpert.Data.Migrations
                     b.Property<DateTime?>("LastUpdatedByUserId")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("RepairTypeId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClientCarId");
 
-                    b.HasIndex("RepairTypeId");
-
                     b.ToTable("Repairs");
-                });
-
-            modelBuilder.Entity("EngineExpert.Data.Models.RepairType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("CreatedByUserId")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("LastUpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("LastUpdatedByUserId")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RepairType");
                 });
 
             modelBuilder.Entity("EngineExpert.Data.Models.Role", b =>
@@ -425,20 +399,12 @@ namespace EngineExpert.Data.Migrations
             modelBuilder.Entity("EngineExpert.Data.Models.Repair", b =>
                 {
                     b.HasOne("EngineExpert.Data.Models.ClientCar", "ClientCar")
-                        .WithMany("Repairs")
+                        .WithMany()
                         .HasForeignKey("ClientCarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EngineExpert.Data.Models.RepairType", "RepairType")
-                        .WithMany()
-                        .HasForeignKey("RepairTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ClientCar");
-
-                    b.Navigation("RepairType");
                 });
 
             modelBuilder.Entity("EngineExpert.Data.Models.UserRole", b =>
@@ -458,11 +424,6 @@ namespace EngineExpert.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EngineExpert.Data.Models.ClientCar", b =>
-                {
-                    b.Navigation("Repairs");
                 });
 
             modelBuilder.Entity("EngineExpert.Data.Models.User", b =>
