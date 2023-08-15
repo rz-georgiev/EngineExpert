@@ -3,6 +3,7 @@ using System;
 using EngineExpert.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EngineExpert.Data.Migrations
 {
     [DbContext(typeof(EngineExpertDbContext))]
-    partial class EngineExpertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230815143955_AddingIsActive")]
+    partial class AddingIsActive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,6 +159,7 @@ namespace EngineExpert.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("ResetPasswordToken")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Username")

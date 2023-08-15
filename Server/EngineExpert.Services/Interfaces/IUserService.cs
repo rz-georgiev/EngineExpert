@@ -8,7 +8,9 @@ namespace EngineExpert.Services.Interfaces
 
         Task<BaseResponseModel> RegisterAsync(RegisterModelRequest request);
 
-        Task<BaseResponseModel> ForgottenEmailAsync(ForgottenEmailModelRequest request);
+        Task<BaseResponseModel> ConfirmAccountAsync(ConfirmAccountModelRequest request);
+
+        Task<BaseResponseModel> ForgottenPasswordAsync(ForgottenEmailModelRequest request);
 
         Task<BaseResponseModel> ResetPasswordAsync(ResetPasswordModelRequest request);
     }

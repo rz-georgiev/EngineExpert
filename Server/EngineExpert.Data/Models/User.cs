@@ -10,7 +10,9 @@ namespace EngineExpert.Data.Models
 
         public string Email { get; set; }
 
-        public string ResetPasswordToken { get; set; }
+        public string? ResetPasswordToken { get; set; }
+
+        public bool IsActive { get; set; } = false;
 
         public IEnumerable<UserRole> UserRoles { get; set; }
     }

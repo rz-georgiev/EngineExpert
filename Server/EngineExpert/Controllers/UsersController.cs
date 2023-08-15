@@ -27,10 +27,16 @@ namespace EngineExpert.Controllers
             return await _userService.RegisterAsync(request);
         }
 
-        [HttpPost("ForgottenEmail")]
-        public async Task<BaseResponseModel> ForgottenEmail(ForgottenEmailModelRequest request)
+        [HttpPost("ConfirmAccount")]
+        public async Task<BaseResponseModel> ConfirmAccount(ConfirmAccountModelRequest request)
         {
-            return await _userService.ForgottenEmailAsync(request);
+            return await _userService.ConfirmAccountAsync(request);
+        }
+
+        [HttpPost("ForgottenPassword")]
+        public async Task<BaseResponseModel> ForgottenPassword(ForgottenEmailModelRequest request)
+        {
+            return await _userService.ForgottenPasswordAsync(request);
         }
 
         [HttpPost("ResetPassword")]

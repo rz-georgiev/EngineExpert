@@ -34,7 +34,8 @@ namespace EngineExpert.Services.Services
 
             var user = await _dbContext.Users.Where(x =>
                      (x.Username == username || x.Email == username)
-                     && x.Password == GetHashString(password))
+                     && x.Password == GetHashString(password)
+                     && x.IsActive)
                     .Include(x => x.UserRoles)
                     .ThenInclude(x => x.Role)
                     .FirstOrDefaultAsync();
@@ -113,22 +114,71 @@ namespace EngineExpert.Services.Services
                 };
             }
 
+
+            var bytes = new byte[16];
+            using (var rng = new RNGCryptoServiceProvider())
+                rng.GetBytes(bytes);
+            var randomHash = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+
             await _dbContext.AddAsync(new User
             {
                 Username = request.Username,
                 Password = GetHashString(request.Password),
                 Email = request.Email,
                 CreatedAt = DateTime.Now,
+                ResetPasswordToken = randomHash,
+                IsActive = false,
             });
+
+            await _dbContext.SaveChangesAsync();
+
+            var message = $"Please click here to confirm your account -> http://www.engineexpert.com/ConfirmAccount/{randomHash}";
+            await _emailService.SendEmailAsync(request.Email, message);
 
             return new BaseResponseModel
             {
                 IsOk = true,
-                Message = "Successfully registered user!"
+                Message = message,
             };
         }
 
-        public async Task<BaseResponseModel> ForgottenEmailAsync(ForgottenEmailModelRequest request)
+        public async Task<BaseResponseModel> ConfirmAccountAsync(ConfirmAccountModelRequest request)
+        {
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.ResetPasswordToken == request.ConfirmHash);
+                if (user == null)
+                {
+                    return new BaseResponseModel
+                    {
+                        IsOk = false,
+                        Message = $"The provided token is invalid"
+                    };
+                }
+
+                user.IsActive = true;
+                user.ResetPasswordToken = null;
+                await _dbContext.SaveChangesAsync();
+
+
+                return new BaseResponseModel
+                {
+                    IsOk = true,
+                    Message = "Account is activated successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel
+                {
+                    IsOk = false,
+                    Message = $"An error occurred while activating your account"
+                };
+            }
+        }
+
+
+        public async Task<BaseResponseModel> ForgottenPasswordAsync(ForgottenEmailModelRequest request)
         {
             try
             {
@@ -254,5 +304,6 @@ namespace EngineExpert.Services.Services
                 return false;
             }
         }
+
     }
 }
