@@ -54,3 +54,4 @@ D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Co
 D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Services.dll
 D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Core.pdb
 D:\Development\EngineExpert\Server\EngineExpert\bin\Debug\net7.0\EngineExpert.Services.pdb
+D:\Development\EngineExpert\Server\EngineExpert\obj\Debug\net7.0\EngineExpert.MvcApplicationPartsAssemblyInfo.cs

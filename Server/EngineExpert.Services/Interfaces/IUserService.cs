@@ -8,6 +8,8 @@ namespace EngineExpert.Services.Interfaces
 
         Task<BaseResponseModel> RegisterAsync(RegisterModelRequest request);
 
-        //Task<bool> ForgotPasswordAsync(string email);
+        Task<BaseResponseModel> ForgottenEmailAsync(ForgottenEmailModelRequest request);
+
+        Task<BaseResponseModel> ResetPasswordAsync(ResetPasswordModelRequest request);
     }
 }

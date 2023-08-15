@@ -3,6 +3,7 @@ using System;
 using EngineExpert.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EngineExpert.Data.Migrations
 {
     [DbContext(typeof(EngineExpertDbContext))]
-    partial class EngineExpertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230815125409_AttemptToFixConnections2")]
+    partial class AttemptToFixConnections2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,7 +124,12 @@ namespace EngineExpert.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -149,10 +157,6 @@ namespace EngineExpert.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ResetPasswordToken")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -186,6 +190,13 @@ namespace EngineExpert.Data.Migrations
                     b.ToTable("UsersRoles");
                 });
 
+            modelBuilder.Entity("EngineExpert.Data.Models.Role", b =>
+                {
+                    b.HasOne("EngineExpert.Data.Models.User", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("EngineExpert.Data.Models.UserRole", b =>
                 {
                     b.HasOne("EngineExpert.Data.Models.Role", "Role")
@@ -195,7 +206,7 @@ namespace EngineExpert.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("EngineExpert.Data.Models.User", "User")
-                        .WithMany("UserRoles")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -207,7 +218,7 @@ namespace EngineExpert.Data.Migrations
 
             modelBuilder.Entity("EngineExpert.Data.Models.User", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }
